@@ -3,13 +3,14 @@ sc.GameModel.inject({
         this.parent();
 
         this.player2 = new sc.PlayerModel;
-        this.player2.setConfig(this.leaConfig);
+        this.player2.setConfig(this.player.config);
     }
 })
 
 let vec3_temp1 = Vec3.create();
 
 ig.ENTITY.Player.inject({
+    playerIconGfx: new ig.Image("media/entity/effect/player-icons.png"),
     playerNum: 1,
 
     init(x, y, z, settings) {
@@ -21,6 +22,11 @@ ig.ENTITY.Player.inject({
                 this.model = sc.model.player2;
             }
         }
+    },
+
+    initSprites() {
+        this.setSpriteCount(2, true);
+        this.sprites[1].setImageSrc(this.playerIconGfx)
     },
 
     update() {
@@ -73,15 +79,36 @@ ig.ENTITY.Player.inject({
     }
 });
 
+const fontTimer = 0.75;
+
+
 sc.CrossCode.inject({
+    fontTimer,
+    
     createPlayer() {
         this.parent();
+        let x: ig.ENTITY.Player.Settings = {
+            playerNum: 2
+        }
 
-        this.player2Entity = ig.game.spawnEntity("Player", 0, 0, 0, {playerNum: 2});
+        this.player2Entity = ig.game.spawnEntity("Player", 0, 0, 0, {playerNum: 2} as ig.ENTITY.Player.Settings);
     },
 
     getPlayer1and2Distance() {
         return ig.CollTools.getScreenDistance(this.playerEntity.coll, this.player2Entity.coll);
+    },
+
+    update() {
+        this.parent();
+        this.fontTimer -= ig.system.tick;
+
+        if(this.fontTimer <= 0) {
+            sc.fontsystem.gamepadUpdate = true;
+            sc.fontsystem.onVarsChanged();
+            sc.fontsystem.gamepadUpdate = false;
+
+            this.fontTimer = fontTimer;
+        }
     }
 });
 
@@ -94,7 +121,7 @@ ig.Game.inject({
         if(this.player2Entity) {
             this.player2Entity.coll.level = this.playerEntity.coll.level;
             this.player2Entity.coll.baseZPos = this.playerEntity.coll.baseZPos;
-            this.player2Entity.coll.face = ig.copy(this.playerEntity.coll.face);
+            this.player2Entity.face = ig.copy(this.playerEntity.face);
             this.player2Entity.coll.pos = ig.copy(this.playerEntity.coll.pos);
         }
     }

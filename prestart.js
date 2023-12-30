@@ -1,3 +1,2 @@
-import "./src/controls.js"
-
-import "./src/player-entity.js"
+import "./dist/prestart/controls.js"
+import "./dist/prestart/player-entity.js"

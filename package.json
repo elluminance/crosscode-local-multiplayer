@@ -1,5 +1,12 @@
 {
     "name": "local-coop",
     "version": "0.0.1",
-    "description": "adds local multiplayer eventually"
+    "description": "adds local multiplayer eventually",
+
+    "ccmodDependencies": {},
+
+    "devDependencies": {
+        "typescript": "^5.1.6",
+        "ultimate-crosscode-typedefs": "el20202/ultimate-crosscode-typedefs"
+    }
 }

@@ -1,0 +1,1 @@
+import "./dist/poststart/font-system.js"

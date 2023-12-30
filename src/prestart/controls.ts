@@ -41,7 +41,7 @@ ig.GamepadManager.inject({
         else return this.parent(button);
     },
     getButtonValue(button) {
-        if(ig.input.currentPlayer == 1) return false;
+        if(ig.input.currentPlayer == 1) return 0;
         else return this.parent(button);
     },
 
@@ -89,3 +89,10 @@ sc.PlayerCrossHairController.inject({
         return parent;
     },
 });
+
+sc.GlobalInput.inject({
+    onPreUpdate() {
+        ig.input.currentDevice = ig.INPUT_DEVICES.KEYBOARD_AND_MOUSE;
+        this.parent();
+    }
+})
